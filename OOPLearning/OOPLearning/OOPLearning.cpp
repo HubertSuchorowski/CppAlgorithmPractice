@@ -1,7 +1,14 @@
 ﻿#include <iostream>
 using std::string;
 
-class Employee //blueprint for Employee objects
+class AbstractEmployee //abstract class for Employee objects
+{
+	virtual void AskForPromotion() = 0; //pure virtual function to ask for promotion
+};
+
+
+
+class Employee:AbstractEmployee //blueprint for Employee objects
 {
 private:
 	string Name;
@@ -42,19 +49,63 @@ public:
 		std::cout << "Hello, my name is " << Name << ", I work at " << Company << " and I am " << Age << " years old." << std::endl;
 	}
 
+
+	
+
+
 	Employee(string name, string company, int age) {
 		Name = name;
 		Company = company;
 		Age = age;
 	}
 
+	void AskForPromotion() 
+	{
+		if (Age >= 30)
+			std::cout << Name << " got promoted!" << std::endl;
+		else
+			std::cout << Name << ", sorry no promotion for you!" << std::endl;
+	}
+
+
+};
+
+class Developer : public Employee //subclass of Employee for Developer objects
+{
+public:
+	string FavProgrammingLanguage;
+
+	Developer(string name, string company, int age, string FavProgrammingLanguage) : Employee(name, company, age) //constructor for Developer class
+	{
+		this->FavProgrammingLanguage = FavProgrammingLanguage; //initialize the favorite programming language
+	}
+
+	void FixBug() //method to fix a bug
+	{
+		std::cout << GetName() << GetCompany() << " fixed a bug using " << FavProgrammingLanguage << std::endl;
+	}
+	
+};
+
+class Teacher : public Employee {
+	//subclass of Employee for Teacher objects
+public:
+	string Subject;
+	void PrepareLesson() //method to prepare a lesson
+	{
+		std::cout << GetName() << " is preparing a lesson on " << Subject << std::endl;
+	}
+	Teacher(string name, string company, int age, string subject) : Employee(name, company, age) //constructor for Teacher class
+	{
+		Subject = subject; //initialize the subject
+	}
 };
 
 int main()
 {
-	Employee employee1 = Employee("John Doe","Tech Support",25);//create an Employee objects
-	employee1.Introduce(); 
-	Employee employee2 = Employee("Jane Smith", "Software Development", 30);//create another Employee object
-	employee2.Introduce(); //call the Introduce method for the second employee
+	Developer d = Developer("Alice", "TechCorp", 28, "C++"); //create a Developer object
+	Teacher t = Teacher("Bob", "EduCenter", 35, "Mathematics"); //create a Teacher object
+	t.AskForPromotion(); //ask for promotion for the Teacher
+	d.AskForPromotion(); //ask for promotion for the Developer	
 }
 
