@@ -11,9 +11,10 @@ class AbstractEmployee //abstract class for Employee objects
 class Employee:AbstractEmployee //blueprint for Employee objects
 {
 private:
-	string Name;
 	string Company;
 	int Age;
+protected:
+	string Name;
 public:
 	void SetName(string name) //method to set the name of the employee
 	{
@@ -67,6 +68,11 @@ public:
 			std::cout << Name << ", sorry no promotion for you!" << std::endl;
 	}
 
+	virtual void Work() 
+	{
+		std::cout << Name << " Checking emails, other staff" << std::endl;
+	}
+
 
 };
 
@@ -82,9 +88,13 @@ public:
 
 	void FixBug() //method to fix a bug
 	{
-		std::cout << GetName() << GetCompany() << " fixed a bug using " << FavProgrammingLanguage << std::endl;
+		std::cout << Name << " fixed a bug using " << FavProgrammingLanguage << std::endl;
 	}
 	
+	void Work() //method to work
+	{
+		std::cout << Name << " is working on " << FavProgrammingLanguage << std::endl;
+	}
 };
 
 class Teacher : public Employee {
@@ -93,11 +103,15 @@ public:
 	string Subject;
 	void PrepareLesson() //method to prepare a lesson
 	{
-		std::cout << GetName() << " is preparing a lesson on " << Subject << std::endl;
+		std::cout << Name << " is preparing a lesson on " << Subject << std::endl;
 	}
 	Teacher(string name, string company, int age, string subject) : Employee(name, company, age) //constructor for Teacher class
 	{
 		Subject = subject; //initialize the subject
+	}
+
+	void Work() {
+		std::cout << Name << " is teaching " << Subject << std::endl;
 	}
 };
 
@@ -105,7 +119,10 @@ int main()
 {
 	Developer d = Developer("Alice", "TechCorp", 28, "C++"); //create a Developer object
 	Teacher t = Teacher("Bob", "EduCenter", 35, "Mathematics"); //create a Teacher object
-	t.AskForPromotion(); //ask for promotion for the Teacher
-	d.AskForPromotion(); //ask for promotion for the Developer	
+	
+	Employee* e1 = &d; //create a pointer to Employee and assign it to the Developer object
+	Employee* e2 = &t; //create a pointer to Employee and assign it to the Teacher object
+	e1->Work(); //call the Work method for the Developer object
+	e2->Work(); //call the Work method for the Teacher object
 }
 
